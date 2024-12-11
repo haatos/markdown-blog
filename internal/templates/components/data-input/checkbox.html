@@ -1,0 +1,21 @@
+{{ define "checkbox" -}}
+  {{ $left := index . "left" }}
+  {{ $right := index . "right" }}
+  {{ $id := index . "id" }}
+  {{ $name := index . "name" }}
+  {{ $checked := index . "checked" }}
+  {{ $class := index . "class" }}
+
+
+  <div class="form-control">
+    <label class="label cursor-pointer">
+      {{ if $left }}<span class="label-text">{{ $left }}</span>{{ end }}
+      <input
+        type="checkbox"
+        {{ if $checked }}checked="{{ $checked }}"{{ end }}
+        class="checkbox {{ $class }}"
+      />
+      {{ if $right }}<span class="label-text">{{ $right }}</span>{{ end }}
+    </label>
+  </div>
+{{ end }}

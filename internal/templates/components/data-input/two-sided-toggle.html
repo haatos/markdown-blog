@@ -1,0 +1,56 @@
+{{ define "two-sided-toggle" -}}
+  {{ $left := index . "left" }}
+  {{ $right := index . "right" }}
+  {{ $id := index . "id" }}
+  {{ $name := index . "name" }}
+  {{ $checked := index . "checked" }}
+  {{ $class := index . "class" }}
+
+
+  <div class="form-control">
+    <label class="label cursor-pointer">
+      <span
+        class="label-text {{ if $right }}
+          {{ if not $checked }}
+            underline font-bold
+          {{ end }}
+        {{ end }}"
+        >{{ $left }}
+      </span>
+      <input
+        {{ if $id }}id="{{ $id }}"{{ end }}
+        {{ if $name }}name="{{ $name }}"{{ end }}
+        type="checkbox"
+        class="toggle {{ $class }}"
+        {{ if $checked }}checked="{{ $checked }}"{{ end }}
+      />
+      <span
+        class="label-text {{ if and $checked $left }}
+          underline font-bold
+        {{ end }}"
+      >
+        {{ $right }}
+      </span>
+    </label>
+    <script>
+      ((input) => {
+        input.addEventListener("change", (evt) => {
+          let spans = input.parentElement.querySelectorAll("span.label-text");
+          if (spans[0].innerText !== "" && spans[1].innerText !== "") {
+            if (input.checked) {
+              spans[0].classList.remove("underline");
+              spans[0].classList.remove("font-bold");
+              spans[1].classList.add("underline");
+              spans[1].classList.add("font-bold");
+            } else {
+              spans[1].classList.remove("underline");
+              spans[1].classList.remove("font-bold");
+              spans[0].classList.add("underline");
+              spans[0].classList.add("font-bold");
+            }
+          }
+        });
+      })(document.currentScript.parentElement.querySelector("input.toggle"));
+    </script>
+  </div>
+{{ end }}

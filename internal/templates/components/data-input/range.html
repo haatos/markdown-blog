@@ -1,0 +1,39 @@
+{{ define "range" -}}
+  {{ $label := index . "label" }}
+  {{ $id := index . "id" }}
+  {{ $name := index . "name" }}
+  {{ $min := index . "min" }}
+  {{ $max := index . "max" }}
+  {{ $value := index . "value" }}
+  {{ $step := index . "step" }}
+  {{ $class := index . "class" }}
+
+
+  <script src="/static/js/alpine.min.js" defer></script>
+  <div class="form-control">
+    <label class="label space-x-1" x-data="{ value: {{ $value }} }">
+      {{ if $label }}
+        <span>{{ $label }}</span>
+      {{ end }}
+      <input
+        type="range"
+        {{ if $id }}id="{{ $id }}"{{ end }}
+        {{ if $name }}name="{{ $name }}"{{ end }}
+        {{ if $min }}
+          min="{{ $min }}"
+        {{ else }}
+          min="0"
+        {{ end }}
+        {{ if $max }}
+          max="{{ $max }}"
+        {{ else }}
+          max="0"
+        {{ end }}
+        x-model="value"
+        step="{{ $step }}"
+        class="range {{ $class }}"
+      />
+      <div x-text="value" class="w-full max-w-7"></div>
+    </label>
+  </div>
+{{ end }}

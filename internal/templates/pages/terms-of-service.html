@@ -1,0 +1,73 @@
+{{ define "terms-of-service" }}
+  {{ template "top" . }}
+  {{ block "terms-of-service-main" . }}
+    <section
+      class="prose pt-12 pb-32 px-8 xl:px-0 w-full mx-auto max-w-screen-md min-h-screen flex flex-col text-justify"
+    >
+      <h1>Terms of Service for {{ .Domain }}</h1>
+      <p>
+        These Terms of Service govern your use of {{ .Domain }}. By accessing or
+        using {{ .Domain }}, you agree to be bound by these Terms of Service.
+      </p>
+      <h2>Use of Content</h2>
+      <p>
+        The content provided on {{ .Domain }} is for your general information
+        and personal use only. It is subject to change without notice.
+      </p>
+      <p>
+        Reproduction of any material from {{ .Domain }} is prohibited unless it
+        is in accordance with the copyright notice, which forms part of these
+        terms and conditions.
+      </p>
+      <p>
+        All trademarks reproduced on {{ .Domain }}, which are not the property
+        of, or licensed to the operator, are acknowledged on the website.
+      </p>
+      <h2>User Conduct</h2>
+      <p>
+        You agree not to use {{ .Domain }}<span>for</span> any unlawful purpose
+        or in any way that could damage, disable, overburden, or impair the site
+        or interfere with any other party's use and enjoyment of {{ .Domain }}.
+      </p>
+      <p>
+        You must not attempt to gain unauthorized access to {{ .Domain }}, the
+        server on which it is stored, or any server, computer, or database
+        connected to {{ .Domain }}.
+      </p>
+      <h2>Links to Other Websites</h2>
+      <p>
+        {{ .Domain }} may contain links to other websites. These links are
+        provided for your convenience to provide further information. They do
+        not signify that we endorse the website(s). We have no responsibility
+        for the content of the linked website(s).
+      </p>
+      <h2>Limitation of Liability</h2>
+      <p>
+        In no event shall {{ .Domain }} or its owners, operators, or affiliates
+        be liable for any direct, indirect, punitive, incidental, special, or
+        consequential damages arising out of, or in any way connected with, the
+        use of {{ .Domain }} or with the delay or inability to use
+        {{ .Domain }}.
+      </p>
+      <h2>Indemnity</h2>
+      <p>
+        You agree to indemnify and hold {{ .Domain }} and its owners, operators,
+        and affiliates harmless from any claim or demand, including reasonable
+        attorneys' fees, made by any third party due to or arising out of your
+        breach of these Terms of Service or your violation of any law or the
+        rights of a third party.
+      </p>
+      <h2>Changes to Terms of Service</h2>
+      <p>
+        {{ .Domain }} reserves the right to revise these Terms of Service at any
+        time without notice. By using {{ .Domain }}, you are agreeing to be
+        bound by the then-current version of these Terms of Service.
+      </p>
+      <p>
+        If you have any questions about these Terms of Service, please contact
+        us at {{ .ContactEmail }}.
+      </p>
+    </section>
+  {{ end }}
+  {{ template "bottom" . }}
+{{ end }}

@@ -1,0 +1,27 @@
+{{ define "toggle" -}}
+  {{ $left := index . "left" }}
+  {{ $right := index . "right" }}
+  {{ $id := index . "id" }}
+  {{ $name := index . "name" }}
+  {{ $checked := index . "checked" }}
+  {{ $class := index . "class" }}
+
+
+  <div class="form-control">
+    <label class="label cursor-pointer">
+      <span class="label-text">
+        {{ $left }}
+      </span>
+      <input
+        {{ if $id }}id="{{ $id }}"{{ end }}
+        {{ if $name }}name="{{ $name }}"{{ end }}
+        type="checkbox"
+        class="toggle {{ $class }}"
+        {{ if $checked }}checked="{{ $checked }}"{{ end }}
+      />
+      <span class="label-text">
+        {{ $right }}
+      </span>
+    </label>
+  </div>
+{{ end }}

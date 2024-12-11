@@ -1,0 +1,24 @@
+{{ define "modal-top" -}}
+  {{ $id := index . "id" }}
+  {{ $label := index . "label" }}
+  {{ $class := index . "class" }}
+
+
+<button class="btn">
+    {{$label}} 
+    <script>
+    ((btn)=>{
+        btn.addEventListener("click", (evt) => {
+            document.getElementById("{{$id}}").showModal()
+        })
+    })(document.currentScript.parentElement)
+    </script>   
+</button>
+<dialog id="{{ $id }}" class="modal">
+  <div class="modal-box">
+{{ end }}
+
+{{ define "modal-bot" -}}
+  </div>
+</dialog>
+{{end}}

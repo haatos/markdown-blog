@@ -1,0 +1,42 @@
+body,
+html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+}
+
+.CodeMirror {
+    background: transparent !important;
+    color: inherit !important;
+}
+
+.CodeMirror-cursor {
+    border-left-color: oklch(var(--bc)) !important;
+}
+
+.CodeMirror,
+.CodeMirror-scroll {
+    height: 600px;
+    max-height: 600px;
+    min-height: 600px;
+}
+
+.htmx-indicator {
+    opacity: 0;
+    transition: opacity 500ms ease-in;
+}
+
+.htmx-request .htmx-indicator {
+    opacity: 1
+}
+
+.htmx-request.htmx-indicator {
+    opacity: 1
+}
+
+article>p>img {
+    margin: auto;
+}

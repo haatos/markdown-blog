@@ -1,0 +1,23 @@
+{{ define "head" }}
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://unpkg.com/htmx.org@2.0.3"></script>
+    <link rel="stylesheet" href="/static/css/tw.css" />
+    <link rel="stylesheet" href="/static/css/custom.css" />
+    {{ if hasPrefix .Path "/blog/post" }}
+      <link rel="stylesheet" href="/static/css/chroma.css" />
+    {{ end }}
+    {{ if hasPrefix .Path "/editor" }}
+      <link rel="stylesheet" href="/static/css/simplemde.min.css" />
+      <script src="/static/js/simplemde.min.js"></script>
+    {{ end }}
+    <title>{{ .Title }}</title>
+  </head>
+{{ end }}

@@ -1,0 +1,17 @@
+{{ define "accordion-top" -}}
+  {{ $name := index . "name" }}
+  {{ $label := index . "label" }}
+
+
+  <div class="collapse bg-base-200">
+    <input type="radio" name="{{ $name }}" />
+    <div class="collapse-title text-xl font-medium">
+      {{ $label }}
+    </div>
+    <div class="collapse-content">
+{{ end }}
+
+{{ define "accordion-bot" -}}
+    </div>
+  </div>
+{{end}}

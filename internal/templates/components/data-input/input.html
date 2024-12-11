@@ -1,0 +1,30 @@
+{{ define "input" -}}
+  {{ $label := index . "label" }}
+  {{ $type := index . "type" }}
+  {{ $id := index . "id" }}
+  {{ $name := index . "name" }}
+  {{ $placeholder := index . "placeholder" }}
+  {{ $value := index . "value" }}
+  {{ $error := index . "error" }}
+  {{ $class := index . "class" }}
+
+
+  <label class="form-control w-full max-w-xs">
+    <label {{ if $id }}for="{{ $id }}"{{ end }} class="label">
+      <span class="label-text">{{ $label }}</span>
+    </label>
+    <input
+      {{ if $id }}id="{{ $id }}"{{ end }}
+      {{ if $type }}type="{{ $type }}"{{ end }}
+      {{ if $name }}name="{{ $name }}"{{ end }}
+      {{ if $placeholder }}placeholder="{{ $placeholder }}"{{ end }}
+      {{ if $value }}value="{{ $value }}"{{ end }}
+      class="input grow {{ $class }} {{ if $error }}
+        border-error
+      {{ end }}"
+    />
+    <div class="label">
+      <span class="label-text-alt text-error">{{ $error }}</span>
+    </div>
+  </label>
+{{ end }}

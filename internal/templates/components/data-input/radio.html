@@ -1,0 +1,22 @@
+{{ define "radio" -}}
+  {{ $label := index . "label" }}
+  {{ $type := index . "type" }}
+  {{ $id := index . "id" }}
+  {{ $name := index . "name" }}
+  {{ $checked := index . "checked" }}
+  {{ $class := index . "class" }}
+
+
+  <div class="form-control">
+    <label class="label cursor-pointer">
+      {{ if $label }}<span class="label-text">{{ $label }}</span>{{ end }}
+      <input
+        {{ if $id }}id="{{ $id }}"{{ end }}
+        type="radio"
+        {{ if $name }}name="{{ $name }}"{{ end }}
+        {{ if $checked }}checked="{{ $checked }}"{{ end }}
+        class="radio {{ $class }}"
+      />
+    </label>
+  </div>
+{{ end }}

@@ -1,0 +1,17 @@
+{{ define "dropdown-top" -}}
+  {{ $id := index . "id" }}
+  {{ $label := index . "label" }}
+  {{ $class := index . "class" }}
+
+
+<details {{if $id}}id="{{$id}}"{{end}} class="dropdown {{ $class }}">
+    <summary class="btn m-1">{{ $label }}</summary>
+    <ul
+      class="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
+    >
+{{ end }}
+
+{{ define "dropdown-bot" -}}
+    </ul>
+  </details>
+{{end}}

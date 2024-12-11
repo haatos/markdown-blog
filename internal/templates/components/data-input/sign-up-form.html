@@ -1,0 +1,36 @@
+{{ define "sign-up-form" }}
+  <div class="max-w-xs px-2 sm:px-0 mx-auto py-8">
+    <div class="space-y-4">
+      {{ template "google-oauth-link" .GoogleOAuthHref }}
+      {{ template "github-oauth-link" .GithubOAuthHref }}
+    </div>
+    <div class="divider">OR</div>
+    <form>
+      {{ template "input" withAttrs
+        "name" "first_name"
+        "label" "First name"
+        "placeholder" "Your first name..."
+        "value" .FirstName
+        "error" .FirstNameError
+        "class" "input-bordered"
+      }}
+      {{ template "input" withAttrs
+        "name" "last_name" "label"
+        "Last name" "placeholder"
+        "Your last name..."
+        "value" .LastName
+        "error" .LastNameError
+        "class" "input-bordered"
+      }}
+      {{ template "input" withAttrs
+        "name" "email"
+        "label" "Email"
+        "placeholder" "Your email..."
+        "value" .Email
+        "error" .EmailError
+        "class" "input-bordered"
+      }}
+      <button type="submit" class="w-full btn btn-primary mt-4">Sign up</button>
+    </form>
+  </div>
+{{ end }}

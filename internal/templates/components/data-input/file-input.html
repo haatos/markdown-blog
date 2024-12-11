@@ -1,0 +1,27 @@
+{{ define "file-input" -}}
+  {{ $label := index . "label" }}
+  {{ $id := index . "id" }}
+  {{ $name := index . "name" }}
+  {{ $value := index . "value" }}
+  {{ $error := index . "error" }}
+  {{ $class := index . "class" }}
+
+
+  <label class="form-control w-full max-w-xs">
+    {{ if $label }}
+      <div class="label">
+        <span class="label-text">{{ $label }}</span>
+      </div>
+    {{ end }}
+    <input
+      type="file"
+      {{ if $id }}id="{{ $id }}"{{ end }}
+      {{ if $name }}name="{{ $name }}"{{ end }}
+      {{ if $value }}value="{{ $value }}"{{ end }}
+      class="file-input w-full {{ $class }}"
+    />
+    <div class="label">
+      <span class="label-text-alt text-error">{{ $error }}</span>
+    </div>
+  </label>
+{{ end }}

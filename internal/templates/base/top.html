@@ -1,0 +1,37 @@
+{{ define "top" }}
+  <!doctype html>
+  <html data-theme="getColorScheme()" lang="en">
+    {{ template "head" .Head }}
+    <body>
+      <div class="drawer xl:drawer-open">
+        <input id="nav-drawer" type="checkbox" class="drawer-toggle" />
+        <div class="drawer-content">
+          <div class="flex space-x-1 items-center">
+            <label
+              for="nav-drawer"
+              class="cursor-pointer btn btn-ghost drawer-button xl:hidden"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 6h16M4 12h8m-8 6h16"
+                ></path>
+              </svg>
+            </label>
+            <a
+              href="/"
+              class="group btn !shadow-none !bg-transparent !border-none flex items-center xl:hidden"
+            >
+                {{template "logo"}}
+            </a>
+          </div>
+          <main class="w-full max-w-screen-lg min-h-svh pl-8 pr-8 xl:pr-0">
+{{ end }}

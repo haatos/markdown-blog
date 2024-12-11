@@ -1,0 +1,24 @@
+{{ define "select-top" -}}
+  {{ $label := index . "label" }}
+  {{ $id := index . "id" }}
+  {{ $name := index . "name" }}
+  {{ $class := index . "class" }}
+
+
+  <label class="form-control w-full max-w-xs">
+    <div class="label">
+      <span class="label-text">
+        {{ $label }}
+      </span>
+    </div>
+    <select
+      {{ if $id }}id="{{ $id }}"{{ end }}
+      {{ if $name }}name="{{ $name }}"{{ end }}
+        class="select {{ $class }}"
+    >
+{{ end }}
+
+{{define "select-bot" -}}
+    </select>
+  </label>
+{{end}}

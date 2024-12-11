@@ -1,0 +1,36 @@
+{{ define "textarea" -}}
+  {{ $label := index . "label" }}
+  {{ $type := index . "type" }}
+  {{ $id := index . "id" }}
+  {{ $name := index . "name" }}
+  {{ $placeholder := index . "placeholder" }}
+  {{ $value := index . "value" }}
+  {{ $error := index . "error" }}
+  {{ $rows := index . "rows" }}
+  {{ $class := index . "class" }}
+
+
+  <label class="form-control">
+    <label {{ if $id }}for="{{ $id }}"{{ end }} class="label">
+      <span class="label-text">{{ $label }}</span>
+    </label>
+    <textarea
+      {{ if $id }}id="{{ $id }}"{{ end }}
+      {{ if $name }}name="{{ $name }}"{{ end }}
+      {{ if $placeholder }}placeholder="{{ $placeholder }}"{{ end }}
+      {{ if $rows }}
+        rows="{{ $rows }}"
+      {{ else }}
+        rows="5"
+      {{ end }}
+      class="textarea textarea-bordered {{ $class }} {{ if $error }}
+        border-error
+      {{ end }}"
+    >
+{{ $value }}</textarea
+    >
+    <div class="label">
+      <span class="label-text-alt text-error">{{ $error }}</span>
+    </div>
+  </label>
+{{ end }}

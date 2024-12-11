@@ -1,0 +1,51 @@
+{{ define "rating" -}}
+  {{ $id := index . "id" }}
+  {{ $name := index . "name" }}
+  {{ $class := index . "class" }}
+  {{ $count := index . "count" }}
+  {{ $checkedStar := index . "checkedStar" }}
+
+
+  <div {{ if $id }}id="{{ $id }}"{{ end }} class="rating">
+    <input
+      type="radio"
+      name="{{ $name }}"
+      class="mask {{ $class }}"
+      {{ if eq $checkedStar "1" }}
+        checked="checked"
+      {{ end }}
+    />
+    <input
+      type="radio"
+      name="{{ $name }}"
+      class="mask {{ $class }}"
+      {{ if eq $checkedStar "2" }}
+        checked="checked"
+      {{ end }}
+    />
+    <input
+      type="radio"
+      name="{{ $name }}"
+      class="mask {{ $class }}"
+      {{ if eq $checkedStar "3" }}
+        checked="checked"
+      {{ end }}
+    />
+    <input
+      type="radio"
+      name="{{ $name }}"
+      class="mask {{ $class }}"
+      {{ if eq $checkedStar "4" }}
+        checked="checked"
+      {{ end }}
+    />
+    <input
+      type="radio"
+      name="{{ $name }}"
+      class="mask {{ $class }}"
+      {{ if eq $checkedStar "5" }}
+        checked="checked"
+      {{ end }}
+    />
+  </div>
+{{ end }}
