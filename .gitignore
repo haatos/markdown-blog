@@ -1,0 +1,6 @@
+bin/
+.env
+*.sqlite*
+node_modules/
+public/static/css/tw.css
+public/static/images/
