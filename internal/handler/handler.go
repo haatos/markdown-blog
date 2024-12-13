@@ -4,6 +4,7 @@ import (
 	"crypto/rand"
 	"database/sql"
 	"encoding/base64"
+	"net/http"
 
 	"github.com/haatos/markdown-blog/internal/model"
 	"github.com/haatos/markdown-blog/internal/templates"
@@ -46,4 +47,47 @@ func generateRandomSessionID() string {
 	b := make([]byte, 16)
 	rand.Read(b)
 	return base64.RawURLEncoding.EncodeToString(b)
+}
+
+func (h *Handler) renderStatusPage(c echo.Context, status int) error {
+	dp := getDefaultPage(c)
+	tn := "status"
+	if isHXRequest(c) {
+		tn += "-main"
+	}
+	switch status {
+	case http.StatusNotFound:
+		return c.Render(
+			http.StatusInternalServerError, tn,
+			templates.StatusPage{
+				Page: dp,
+				Status: templates.Status{
+					Code:        http.StatusNotFound,
+					Title:       "Not Found",
+					Description: "Seems like there's nothing here...",
+				},
+			})
+	case http.StatusForbidden:
+		return c.Render(
+			http.StatusInternalServerError, tn,
+			templates.StatusPage{
+				Page: dp,
+				Status: templates.Status{
+					Code:        http.StatusForbidden,
+					Title:       "Forbidden",
+					Description: "Invalid permissions to view this content.",
+				},
+			})
+	default:
+		return c.Render(
+			http.StatusInternalServerError, tn,
+			templates.StatusPage{
+				Page: dp,
+				Status: templates.Status{
+					Code:        http.StatusInternalServerError,
+					Title:       "Internal Server Error",
+					Description: "Something went terribly wrong.",
+				},
+			})
+	}
 }

@@ -1,0 +1,9 @@
+{{ define "sign-up" }}
+  {{ template "top" . }}
+  {{ block "sign-up-main" . }}
+    <section class="pt-12 lg:pt-24">
+      {{ template "sign-up-form" .Form }}
+    </section>
+  {{ end }}
+  {{ template "bottom" . }}
+{{ end }}

@@ -55,5 +55,16 @@
         Github
       </a>
     </li>
+    <div class="divider"></div>
+    {{ if .User }}
+      <li><a href="/auth/logout" class="btn btn-sm">Log out</a></li>
+    {{ else }}
+      <li>
+        <a href="/auth/signup" class="btn btn-primary btn-sm">Sign Up</a>
+      </li>
+      <li>
+        <a href="/auth/login" class="btn btn-sm">Log In</a>
+      </li>
+    {{ end }}
   </ul>
 {{ end }}

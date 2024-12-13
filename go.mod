@@ -3,6 +3,7 @@ module github.com/haatos/markdown-blog
 go 1.23.3
 
 require (
+	cloud.google.com/go/compute/metadata v0.5.2 // indirect
 	github.com/PuerkitoBio/goquery v1.10.0 // indirect
 	github.com/alecthomas/chroma v0.10.0 // indirect
 	github.com/andybalholm/cascadia v1.3.2 // indirect
@@ -23,6 +24,7 @@ require (
 	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/crypto v0.30.0 // indirect
 	golang.org/x/net v0.32.0 // indirect
+	golang.org/x/oauth2 v0.24.0 // indirect
 	golang.org/x/sync v0.10.0 // indirect
 	golang.org/x/sys v0.28.0 // indirect
 	golang.org/x/text v0.21.0 // indirect

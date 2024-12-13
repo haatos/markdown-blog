@@ -1,0 +1,9 @@
+{{ define "log-in" }}
+  {{ template "top" . }}
+  {{ block "log-in-main" . }}
+    <section class="pt-12 lg:pt-24">
+      {{ template "log-in-form" .Form }}
+    </section>
+  {{ end }}
+  {{ template "bottom" . }}
+{{ end }}

@@ -32,9 +32,9 @@ func main() {
 	e.Logger.SetHeader(loggerFormat)
 
 	config := internal.GetRateLimiterConfig()
-	e.Use(middleware.RateLimiterWithConfig(config))
-
 	e.Use(
+		h.SessionMiddleware,
+		middleware.RateLimiterWithConfig(config),
 		middleware.LoggerWithConfig(middleware.LoggerConfig{
 			Format: loggerFormat,
 		}),
@@ -48,13 +48,14 @@ func main() {
 
 	e.GET("", h.GetIndexPage)
 
-	// auth := e.Group("/auth")
-	// auth.GET("/login", h.GetLoginPage)
+	auth := e.Group("/auth")
+	auth.GET("/login", h.GetLoginPage)
 	// auth.POST("/login", h.PostLogin)
-	// auth.GET("/signup", h.GetSignUpPage)
+	auth.GET("/signup", h.GetSignUpPage)
 	// auth.POST("/signup", h.PostSignUp)
-	// auth.GET("/oauth/:provider", h.GetOAuthFlow)
-	// auth.GET("/oauth/:provider/callback", h.GetOAuthCallback)
+	auth.GET("/logout", h.GetLogOut)
+	auth.GET("/oauth/:provider", h.GetOAuthFlow)
+	auth.GET("/oauth/:provider/callback", h.GetOAuthCallback)
 
 	articles := e.Group("/articles")
 	articles.GET("", h.GetArticlesPage)
