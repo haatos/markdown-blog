@@ -20,11 +20,9 @@ func CreateArticle(ctx context.Context, q sqlscan.Querier, article *model.Articl
 			description,
 			image_key,
 			content,
-			public,
-			published_on,
-			updated_on
+			published_on
 		)
-		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+		VALUES ($1, $2, $3, $4, $5, $6, $7)
 		RETURNING id
 		`,
 		article.UserID,
@@ -33,7 +31,6 @@ func CreateArticle(ctx context.Context, q sqlscan.Querier, article *model.Articl
 		article.Description,
 		article.ImageKey,
 		article.Content,
-		article.Public,
 		article.PublishedOn.Format(internal.DBTimestampLayout),
 		article.UpdatedOn.Format(internal.DBTimestampLayout),
 	)
@@ -49,9 +46,7 @@ func ReadArticleByID(ctx context.Context, q sqlscan.Querier, article *model.Arti
 			description,
 			image_key,
 			content,
-			public,
-			published_on,
-			updated_on
+			published_on
 		FROM articles
 		WHERE id = $1
 		`,
@@ -89,9 +84,7 @@ func ReadArticleBySlug(ctx context.Context, q sqlscan.Querier, article *model.Ar
 			a.description,
 			a.image_key,
 			a.content,
-			a.public,
 			a.published_on,
-			a.updated_on,
 			u.first_name,
 			u.last_name
 		FROM articles a
@@ -114,10 +107,9 @@ func ReadAllArticles(ctx context.Context, q sqlscan.Querier, limit, offset int, 
 			articles.title,
 			articles.slug,
 			articles.description,
+			articles.content,
 			articles.image_key,
-			articles.public,
-			articles.published_on,
-			articles.updated_on
+			articles.published_on
 		FROM articles
 		WHERE LOWER(title) LIKE '%'||$1||'%'
 		ORDER BY articles.published_on DESC
@@ -126,6 +118,23 @@ func ReadAllArticles(ctx context.Context, q sqlscan.Querier, limit, offset int, 
 		filter, limit, offset,
 	)
 	return as, err
+}
+
+type ARTag struct {
+	TagID     string
+	ArticleID string
+}
+
+func ReadArticlesTags(ctx context.Context, q sqlscan.Querier) ([]ARTag, error) {
+	artags := make([]ARTag, 0)
+	err := sqlscan.Select(ctx, q, &artags, "select tag_id, article_id from articles_tags")
+	return artags, err
+}
+
+func ReadAllImages(ctx context.Context, q sqlscan.Querier) ([]model.Image, error) {
+	images := make([]model.Image, 0)
+	err := sqlscan.Select(ctx, q, &images, "select id, name, image_key from images")
+	return images, err
 }
 
 func ReadPublicArticles(ctx context.Context, q sqlscan.Querier, limit, offset int, filter string) ([]model.Article, error) {
@@ -140,11 +149,9 @@ func ReadPublicArticles(ctx context.Context, q sqlscan.Querier, limit, offset in
 			articles.slug,
 			articles.description,
 			articles.image_key,
-			articles.public,
-			articles.published_on,
-			articles.updated_on
+			articles.published_on
 		FROM articles
-		WHERE public = true AND LOWER(title) LIKE '%'||$1||'%'
+		WHERE published_on IS NOT NULL AND LOWER(title) LIKE '%'||$1||'%'
 		ORDER BY articles.published_on DESC
 		LIMIT $2 OFFSET $3
 		`,
@@ -165,11 +172,9 @@ func ReadLatestArticles(ctx context.Context, q sqlscan.Querier, limit int) ([]mo
 			articles.slug,
 			articles.description,
 			articles.image_key,
-			articles.public,
-			articles.published_on,
-			articles.updated_on
+			articles.published_on
 		FROM articles
-		WHERE public = true
+		WHERE published_on IS NOT NULL
 		ORDER BY published_on DESC
 		LIMIT $1
 		`,
@@ -185,8 +190,8 @@ func handleArticleRows(as []model.Article, rows *sql.Rows) ([]model.Article, err
 	for rows.Next() {
 		var aID, aUserID int
 		var aTitle, aSlug, aDescription, aImageKey string
-		var aPublic bool
-		var aPublishedOn, aUpdatedOn time.Time
+		var aUpdatedOn time.Time
+		var aPublishedOn *time.Time
 		var tagID *int
 		var tagName *string
 
@@ -197,7 +202,6 @@ func handleArticleRows(as []model.Article, rows *sql.Rows) ([]model.Article, err
 			&aSlug,
 			&aDescription,
 			&aImageKey,
-			&aPublic,
 			&aPublishedOn,
 			&aUpdatedOn,
 			&tagID,
@@ -215,9 +219,7 @@ func handleArticleRows(as []model.Article, rows *sql.Rows) ([]model.Article, err
 				Slug:        aSlug,
 				Description: aDescription,
 				ImageKey:    aImageKey,
-				Public:      aPublic,
 				PublishedOn: aPublishedOn,
-				UpdatedOn:   aPublishedOn,
 			}
 			tags = make([]model.Tag, 0, 3)
 		} else if aID != articleID {
@@ -232,9 +234,7 @@ func handleArticleRows(as []model.Article, rows *sql.Rows) ([]model.Article, err
 				Slug:        aSlug,
 				Description: aDescription,
 				ImageKey:    aImageKey,
-				Public:      aPublic,
 				PublishedOn: aPublishedOn,
-				UpdatedOn:   aPublishedOn,
 			}
 		}
 		if tagID != nil && tagName != nil {
@@ -286,9 +286,7 @@ func ReadRelatedArticlesByID(ctx context.Context, q sqlscan.Querier, id int, lim
 			a.slug,
 			a.description,
 			a.image_key,
-			a.public,
 			a.published_on,
-			a.updated_on,
 			t.id,
 			t.name
 		FROM articles a

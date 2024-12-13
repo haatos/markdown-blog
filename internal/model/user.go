@@ -18,6 +18,6 @@ type User struct {
 	Expires sql.NullTime
 }
 
-func (u *User) IsOwner() bool {
+func (u *User) IsSuperuser() bool {
 	return u != nil && u.Email == internal.Settings.SuperuserEmail
 }

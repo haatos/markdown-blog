@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS roles (
 );
 
 INSERT INTO roles (id, name) VALUES (1, 'free');
-INSERT INTO roles (id, name) VALUES (10000, 'owner');
+INSERT INTO roles (id, name) VALUES (1000, 'superuser');
 
 CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -34,9 +34,7 @@ CREATE TABLE IF NOT EXISTS articles (
     description TEXT,
     image_key TEXT,
     content TEXT,
-    public BOOLEAN,
     created_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     published_on TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE SET NULL,
     UNIQUE (title),

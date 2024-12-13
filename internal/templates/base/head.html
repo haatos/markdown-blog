@@ -11,9 +11,7 @@
     <script src="https://unpkg.com/htmx.org@2.0.3"></script>
     <link rel="stylesheet" href="/static/css/tw.css" />
     <link rel="stylesheet" href="/static/css/custom.css" />
-    {{ if hasPrefix .Path "/blog/post" }}
-      <link rel="stylesheet" href="/static/css/chroma.css" />
-    {{ end }}
+    <link rel="stylesheet" href="/static/css/chroma.css" />
     {{ if hasPrefix .Path "/editor" }}
       <link rel="stylesheet" href="/static/css/simplemde.min.css" />
       <script src="/static/js/simplemde.min.js"></script>

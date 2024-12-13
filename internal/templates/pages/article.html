@@ -1,0 +1,15 @@
+{{ define "article" }}
+  {{ template "top" . }}
+  {{ block "article-main" . }}
+    <article class="prose w-full max-w-screen-md mt-12 mb-24">
+      <h1>{{ .Article.Title }}</h1>
+      {{ if .Article.ImageKey }}
+        <figure>
+          <img src="{{ .Article.ImageURL }}" alt="Article image" />
+        </figure>
+      {{ end }}
+      {{ rawHTML .Article.Content }}
+    </article>
+  {{ end }}
+  {{ template "bottom" . }}
+{{ end }}

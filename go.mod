@@ -3,6 +3,10 @@ module github.com/haatos/markdown-blog
 go 1.23.3
 
 require (
+	github.com/PuerkitoBio/goquery v1.10.0 // indirect
+	github.com/alecthomas/chroma v0.10.0 // indirect
+	github.com/andybalholm/cascadia v1.3.2 // indirect
+	github.com/dlclark/regexp2 v1.11.4 // indirect
 	github.com/georgysavva/scany/v2 v2.1.3 // indirect
 	github.com/gorilla/securecookie v1.1.2 // indirect
 	github.com/labstack/echo/v4 v4.13.1 // indirect
@@ -12,6 +16,7 @@ require (
 	github.com/mattn/go-sqlite3 v1.14.24 // indirect
 	github.com/mfridman/interpolate v0.0.2 // indirect
 	github.com/pressly/goose/v3 v3.23.0 // indirect
+	github.com/russross/blackfriday v1.6.0 // indirect
 	github.com/sethvargo/go-retry v0.3.0 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v1.2.2 // indirect

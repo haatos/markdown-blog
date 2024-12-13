@@ -30,11 +30,11 @@ module.exports = {
   daisyui: {
     themes: [
       {
-        light: {
-          primary: "#223843",
-          accent: "#D77A61",
-          neutral: "#DBD3D8",
-          "base-100": "#EFF1F3",
+        mytheme: {
+          primary: "#2A324B",
+          accent: "#F7C59F",
+          neutral: "#767B91",
+          "base-100": "#E1E5EE",
           success: "#15803d",
           info: "#0369a1",
           error: "#be123c",

@@ -5,9 +5,18 @@ import (
 	"database/sql"
 	"encoding/base64"
 
+	"github.com/haatos/markdown-blog/internal/model"
 	"github.com/haatos/markdown-blog/internal/templates"
 	"github.com/labstack/echo/v4"
 )
+
+func getCtxUser(c echo.Context) *model.User {
+	u, ok := c.Get("user").(*model.User)
+	if ok {
+		return u
+	}
+	return nil
+}
 
 func NewHandler(rdb *sql.DB, rwdb *sql.DB) *Handler {
 	return &Handler{
@@ -29,7 +38,8 @@ func templateName(c echo.Context, name string) string {
 }
 
 func getDefaultPage(c echo.Context) templates.Page {
-	return templates.DefaultPage(c.Request().URL.Path)
+	u := getCtxUser(c)
+	return templates.DefaultPage(u, c.Request().URL.Path)
 }
 
 func generateRandomSessionID() string {

@@ -15,8 +15,7 @@ type Article struct {
 	Description string
 	Content     string
 	ImageKey    string
-	Public      bool
-	PublishedOn time.Time
+	PublishedOn *time.Time
 	CreatedOn   time.Time
 	UpdatedOn   time.Time
 

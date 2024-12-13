@@ -21,6 +21,7 @@ func NewRenderer() *Template {
 		return nil
 	})
 	t := template.Must(template.New("").Funcs(template.FuncMap{
+		"increment": func(v, by int) int { return v + by },
 		"hasPrefix": strings.HasPrefix,
 		"rawHTML":   func(s string) template.HTML { return template.HTML(s) },
 		"N": func(n int) []struct{} {
@@ -60,4 +61,14 @@ type Template struct {
 
 func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
 	return t.templates.ExecuteTemplate(w, name, data)
+}
+
+type Error struct {
+	Messages []string
+}
+
+func NewError(messages ...string) Error {
+	return Error{
+		Messages: messages,
+	}
 }

@@ -1,6 +1,36 @@
 {{ define "index" }}
   {{ template "top" . }}
   {{ block "index-main" . }}
+    <section class="prose !w-full max-w-screen-lg mt-12">
+      <h1>Latest articles</h1>
+      <div
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8"
+      >
+        {{ range .RecentArticles }}
+          <div class="w-full card bg-base-100 shadow-xl">
+            {{ if .ImageURL }}
+              <figure>
+                <img src="{{ .ImageURL }}" alt="Article image" />
+              </figure>
+            {{ end }}
+            <div class="card-body">
+              <h2 class="card-title">{{ .Title }}</h2>
+              <p>{{ .Description }}</p>
+              <div class="card-actions justify-end">
+                <a
+                  hx-get="/articles/{{ .Slug }}"
+                  hx-target="main"
+                  hx-push-url="true"
+                  href="/articles/{{ .Slug }}"
+                  class="btn btn-primary btn-sm"
+                  >Read more</a
+                >
+              </div>
+            </div>
+          </div>
+        {{ end }}
+      </div>
+    </section>
   {{ end }}
   {{ template "bottom" . }}
 {{ end }}
