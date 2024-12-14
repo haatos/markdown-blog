@@ -13,6 +13,7 @@
         "value" .FirstName
         "error" .FirstNameError
         "class" "input-bordered"
+        "disabled" "Coming soon..."
       }}
       {{ template "input" withAttrs
         "name" "last_name" "label"
@@ -21,6 +22,7 @@
         "value" .LastName
         "error" .LastNameError
         "class" "input-bordered"
+        "disabled" "Coming soon..."
       }}
       {{ template "input" withAttrs
         "name" "email"
@@ -29,8 +31,11 @@
         "value" .Email
         "error" .EmailError
         "class" "input-bordered"
+        "disabled" "Coming soon..."
       }}
-      <button type="submit" class="w-full btn btn-primary mt-4">Sign up</button>
+      <button type="submit" class="w-full btn btn-primary mt-4" disabled>
+        Sign up
+      </button>
     </form>
   </div>
 {{ end }}

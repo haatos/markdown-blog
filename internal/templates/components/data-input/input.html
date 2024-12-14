@@ -7,6 +7,7 @@
   {{ $value := index . "value" }}
   {{ $error := index . "error" }}
   {{ $class := index . "class" }}
+  {{ $disabled := index . "disabled" }}
 
 
   <label class="form-control w-full max-w-xs">
@@ -17,8 +18,15 @@
       {{ if $id }}id="{{ $id }}"{{ end }}
       {{ if $type }}type="{{ $type }}"{{ end }}
       {{ if $name }}name="{{ $name }}"{{ end }}
-      {{ if $placeholder }}placeholder="{{ $placeholder }}"{{ end }}
       {{ if $value }}value="{{ $value }}"{{ end }}
+      {{ if $disabled }}
+        disabled
+      {{ end }}
+      {{ if $disabled }}
+        disabled placeholder="{{ $disabled }}"
+      {{ else }}
+        placeholder="{{ $placeholder }}"
+      {{ end }}
       class="input grow {{ $class }} {{ if $error }}
         border-error
       {{ end }}"
