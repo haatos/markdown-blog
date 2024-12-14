@@ -15,7 +15,7 @@ func (r RoleID) ToString() string {
 
 const (
 	Member    RoleID = 1
-	Superuser RoleID = 10000
+	Superuser RoleID = 1000
 )
 
 const (

@@ -32,7 +32,6 @@ CREATE TABLE IF NOT EXISTS articles (
     title TEXT,
     slug TEXT,
     description TEXT,
-    image_key TEXT,
     content TEXT,
     created_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     published_on TIMESTAMP,

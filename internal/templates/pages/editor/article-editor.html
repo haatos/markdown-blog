@@ -1,0 +1,148 @@
+{{ define "article-editor" }}
+  {{ template "top" . }}
+  {{ block "article-editor-main" . }}
+    <div class="w-full flex space-y-4">
+      <div
+        class="w-full flex flex-col space-y-4 mb-28 max-w-screen-md mx-auto pt-20"
+      >
+        <div class="flex justify-between items-center">
+          <div class="form-control">
+            <label class="label cursor-pointer w-[150px]">
+              {{ block "article-editor-public-label" .Article.PublishedOn }}
+                <span
+                  id="public-label-span"
+                  class="label-text {{ if . }}
+                    text-success
+                  {{ end }}"
+                >
+                  {{ if . }}
+                    Public
+                  {{ else }}
+                    Private
+                  {{ end }}
+                </span>
+              {{ end }}
+              <input
+                name="visibility"
+                type="checkbox"
+                {{ if .Article.PublishedOn }}
+                  checked="checked"
+                {{ end }}
+                class="toggle toggle-success"
+                hx-patch="/editor/{{ .Article.ID }}/visibility"
+                hx-target="#public-label-span"
+              />
+            </label>
+          </div>
+          <button
+            class="btn btn-sm btn-error transition-colors duration-300"
+            onclick="delete_article_modal.showModal()"
+          >
+            Delete article
+          </button>
+          <dialog id="delete_article_modal" class="modal">
+            <div class="modal-box">
+              <p class="py-4">
+                Are you sure you want to delete the article named
+                '{{ .Article.Title }}'? This action cannot be reverted.
+              </p>
+              <div class="w-full modal-action justify-between">
+                <button
+                  class="btn btn-sm btn-error"
+                  hx-delete="/editor/{{ .Article.ID }}"
+                  hx-swap="none"
+                >
+                  Delete
+                </button>
+                <form method="dialog">
+                  <button class="btn btn-sm">Close</button>
+                </form>
+              </div>
+            </div>
+          </dialog>
+        </div>
+        <div class="form-control">
+          <label class="input input-bordered flex items-center gap-2">
+            <span class="text-base-content/80">Title:</span>
+            <input
+              class="w-full"
+              name="title"
+              type="text"
+              hx-patch="/editor/{{ .Article.ID }}/title"
+              value="{{ .Article.Title }}"
+            />
+          </label>
+        </div>
+        <label class="form-control">
+          <div class="label">
+            <span class="label-text">Description</span>
+          </div>
+          <textarea
+            name="description"
+            class="textarea textarea-bordered textarea-sm max-h-[250px]"
+            placeholder="Description..."
+            rows="3"
+            hx-patch="/editor/{{ .Article.ID }}/description"
+            hx-trigger="change"
+          >
+{{ .Article.Description }}</textarea
+          >
+        </label>
+        <div>
+          <label class="form-control">
+            <div class="label !pb-2 !leading-4">
+              <span class="label-text">Article content</span>
+            </div>
+          </label>
+          <form
+            id="content-form"
+            hx-patch="/editor/{{ .Article.ID }}/content"
+            hx-include="#content-textarea"
+          >
+            <textarea name="content" id="content-textarea" class="hidden">
+{{ .Article.Content }}
+            </textarea
+            >
+          </form>
+          <script>
+            var timeoutId = 0;
+
+            document.addEventListener("DOMContentLoaded", () => {
+              var simplemde = new SimpleMDE({
+                element: document.getElementById("content-textarea"),
+                hideIcons: [
+                  "guide",
+                  "link",
+                  "image",
+                  "preview",
+                  "side-by-side",
+                  "fullscreen",
+                ],
+                indentWithTabs: false,
+                placeholder:
+                  "Type your article here in markdown. Use only h2+ title tags ('##'), as the title input contains the h1 of the article...",
+                tabSize: 4,
+              });
+
+              var form = document.getElementById("content-form");
+
+              form.addEventListener("keyup", (evt) => {
+                if (evt.key == "s" && evt.ctrlKey) {
+                  form.requestSubmit();
+                }
+              });
+
+              simplemde.codemirror.on("keyup", (e) => {
+                console.log(e);
+
+                document.querySelector("textarea[name=content]").value =
+                  simplemde.value();
+              });
+            });
+          </script>
+        </div>
+      </div>
+    </div>
+  {{ end }}
+  {{ template "bottom" . }}
+{{ end }}

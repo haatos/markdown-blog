@@ -1,2 +1,4 @@
 public/static/js/*
 public/static/css/*
+internal/templates/base/top.html
+internal/templates/base/bottom.html

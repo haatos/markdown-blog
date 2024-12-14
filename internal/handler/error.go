@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 	"strings"
 
@@ -65,6 +66,7 @@ func ErrorHandler(err error, c echo.Context) {
 			}
 			return
 		case http.StatusForbidden:
+			fmt.Println("hellooo")
 			if isHXRequest(c) {
 				c.Render(
 					http.StatusNotFound, "status-main",

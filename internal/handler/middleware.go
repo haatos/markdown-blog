@@ -102,11 +102,7 @@ func (h *Handler) RoleMiddleware(roleID internal.RoleID) func(next echo.HandlerF
 			u := getCtxUser(c)
 
 			if u.RoleID < roleID {
-				return c.Render(http.StatusForbidden, "status", ErrorPage{
-					Code:        http.StatusForbidden,
-					Title:       "Forbidden",
-					Description: "Invalid permissions to view this page.",
-				})
+				return echo.NewHTTPError(http.StatusForbidden, "Invalid permissions.")
 			}
 
 			return next(c)

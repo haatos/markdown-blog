@@ -18,7 +18,6 @@ func CreateArticle(ctx context.Context, q sqlscan.Querier, article *model.Articl
 			title,
 			slug,
 			description,
-			image_key,
 			content,
 			published_on
 		)
@@ -29,7 +28,6 @@ func CreateArticle(ctx context.Context, q sqlscan.Querier, article *model.Articl
 		article.Title,
 		article.Slug,
 		article.Description,
-		article.ImageKey,
 		article.Content,
 		article.PublishedOn.Format(internal.DBTimestampLayout),
 		article.UpdatedOn.Format(internal.DBTimestampLayout),
@@ -44,7 +42,6 @@ func ReadArticleByID(ctx context.Context, q sqlscan.Querier, article *model.Arti
 			title,
 			slug,
 			description,
-			image_key,
 			content,
 			published_on
 		FROM articles
@@ -64,16 +61,6 @@ func DeleteArticle(ctx context.Context, tx *sql.Tx, id int) error {
 	return err
 }
 
-func ReadArticleImageURL(ctx context.Context, q sqlscan.Querier, article *model.Article) error {
-	return sqlscan.Get(
-		ctx, q, article,
-		`
-		SELECT image_key FROM articles WHERE id = $1
-		`,
-		article.ID,
-	)
-}
-
 func ReadArticleBySlug(ctx context.Context, q sqlscan.Querier, article *model.Article) error {
 	return sqlscan.Get(ctx, q, article,
 		`
@@ -82,7 +69,6 @@ func ReadArticleBySlug(ctx context.Context, q sqlscan.Querier, article *model.Ar
 			a.title,
 			a.slug,
 			a.description,
-			a.image_key,
 			a.content,
 			a.published_on,
 			u.first_name,
@@ -108,7 +94,6 @@ func ReadAllArticles(ctx context.Context, q sqlscan.Querier, limit, offset int, 
 			articles.slug,
 			articles.description,
 			articles.content,
-			articles.image_key,
 			articles.published_on
 		FROM articles
 		WHERE LOWER(title) LIKE '%'||$1||'%'
@@ -148,7 +133,6 @@ func ReadPublicArticles(ctx context.Context, q sqlscan.Querier, limit, offset in
 			articles.title,
 			articles.slug,
 			articles.description,
-			articles.image_key,
 			articles.published_on
 		FROM articles
 		WHERE published_on IS NOT NULL AND LOWER(title) LIKE '%'||$1||'%'
@@ -171,7 +155,6 @@ func ReadLatestArticles(ctx context.Context, q sqlscan.Querier, limit int) ([]mo
 			articles.title,
 			articles.slug,
 			articles.description,
-			articles.image_key,
 			articles.published_on
 		FROM articles
 		WHERE published_on IS NOT NULL
@@ -285,7 +268,6 @@ func ReadRelatedArticlesByID(ctx context.Context, q sqlscan.Querier, id int, lim
 			a.title,
 			a.slug,
 			a.description,
-			a.image_key,
 			a.published_on,
 			t.id,
 			t.name
