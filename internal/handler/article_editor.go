@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"database/sql"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -13,7 +15,8 @@ import (
 
 type ArticleEditorPage struct {
 	templates.Page
-	Article model.Article
+	Article           model.Article
+	ArticleTagsSelect ArticleTagsSelect
 }
 
 func (h *Handler) GetArticleEditorPage(c echo.Context) error {
@@ -24,9 +27,22 @@ func (h *Handler) GetArticleEditorPage(c echo.Context) error {
 		c.Logger().Error("err reading article by ID", err)
 	}
 
+	if err := data.ReadArticleTags(c.Request().Context(), h.rdb, &article); err != nil {
+		c.Logger().Error("err reading article tags", err)
+	}
+
+	tags, err := data.ReadTags(c.Request().Context(), h.rdb)
+	if err != nil {
+		c.Logger().Error("err reading tags", err)
+	}
+
 	page := ArticleEditorPage{
 		Page:    getDefaultPage(c),
 		Article: article,
+		ArticleTagsSelect: ArticleTagsSelect{
+			ArticleTags: article.Tags,
+			Tags:        tags,
+		},
 	}
 
 	return c.Render(http.StatusOK, "article-editor", page)
@@ -107,4 +123,56 @@ func (h *Handler) DeleteArticle(c echo.Context) error {
 
 	hxRedirect(c, "/articles")
 	return nil
+}
+
+type ArticleTagsSelect struct {
+	ArticleTags []model.Tag
+	Tags        []model.Tag
+}
+
+func (h *Handler) PutArticleTags(c echo.Context) error {
+	values, err := c.FormParams()
+	if err != nil {
+		return newToastError(http.StatusUnprocessableEntity, "Unable to parse tags")
+	}
+
+	tagIDs := values["tags"]
+
+	id := getURLID(c, "articleID")
+	a := model.Article{ID: id}
+	var tags []model.Tag
+	if err := data.WithTx(h.rwdb, func(tx *sql.Tx) error {
+		if err := data.DeleteArticleTags(c.Request().Context(), tx, id); err != nil {
+			c.Logger().Error("err deleting article tags ", err)
+			return err
+		}
+		stmt, err := tx.Prepare(`INSERT INTO articles_tags (article_id, tag_id) VALUES ($1, $2)`)
+		if err != nil {
+			return err
+		}
+		for _, t := range tagIDs {
+			fmt.Printf("inserting articles_tags (%d, %s)\n", id, t)
+			if _, err := stmt.ExecContext(c.Request().Context(), id, t); err != nil {
+				c.Logger().Error("err inserting articles_tags ", err)
+				return err
+			}
+		}
+		return err
+	}); err != nil {
+		return newToastError(http.StatusInternalServerError, "Unable to update article tags")
+	}
+
+	if err := data.ReadArticleByID(c.Request().Context(), h.rdb, &a); err != nil {
+		c.Logger().Error("err reading article by id ", err)
+		return err
+	}
+
+	err = data.ReadArticleTags(c.Request().Context(), h.rdb, &a)
+
+	tags, err = data.ReadTags(c.Request().Context(), h.rdb)
+	if err != nil {
+		c.Logger().Error("err reading tags ", err)
+	}
+
+	return c.Render(http.StatusOK, "article-tags-select", ArticleTagsSelect{ArticleTags: a.Tags, Tags: tags})
 }

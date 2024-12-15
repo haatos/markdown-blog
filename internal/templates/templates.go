@@ -7,8 +7,10 @@ import (
 	"io"
 	"io/fs"
 	"path/filepath"
+	"slices"
 	"strings"
 
+	"github.com/haatos/markdown-blog/internal/model"
 	"github.com/labstack/echo/v4"
 )
 
@@ -26,6 +28,9 @@ func NewRenderer() *Template {
 		"rawHTML":   func(s string) template.HTML { return template.HTML(s) },
 		"N": func(n int) []struct{} {
 			return make([]struct{}, n)
+		},
+		"containsTag": func(tags []model.Tag, tag model.Tag) bool {
+			return slices.Contains(tags, tag)
 		},
 		"withAttrs": func(pairs ...any) (map[string]any, error) {
 			if len(pairs)%2 != 0 {

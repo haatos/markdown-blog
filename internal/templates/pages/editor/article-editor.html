@@ -34,6 +34,39 @@
               />
             </label>
           </div>
+
+          <details class="dropdown">
+            <summary class="btn btn-sm">Tags</summary>
+            <form
+              hx-put="/editor/{{ .Article.ID }}/tags"
+              hx-target="#article-tags-select"
+              hx-swap="outerHTML"
+              class="flex flex-col space-y-1 dropdown-content bg-base-100 p-1 rounded-box border border-base-200"
+            >
+              {{ block "article-tags-select" .ArticleTagsSelect }}
+                <select
+                  id="article-tags-select"
+                  name="tags"
+                  class="select select-bordered select-sm grid grid-cols-2"
+                  multiple
+                >
+                  {{ range .Tags }}
+                    <option
+                      value="{{ .ID }}"
+                      {{ if containsTag $.ArticleTags . }}
+                        selected
+                      {{ end }}
+                    >
+                      {{ .Name }}
+                    </option>
+                  {{ end }}
+                </select>
+              {{ end }}
+              <button type="submit" class="w-full btn btn-xs btn-primary">
+                Update
+              </button>
+            </form>
+          </details>
           <button
             class="btn btn-sm btn-error transition-colors duration-300"
             onclick="delete_article_modal.showModal()"

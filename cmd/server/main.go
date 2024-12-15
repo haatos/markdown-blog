@@ -74,7 +74,7 @@ func main() {
 	editor.PATCH("/description", h.PatchArticleDescription)
 	editor.PATCH("/content", h.PatchArticleContent)
 	editor.PATCH("/visibility", h.PatchArticleVisibility)
-	// editor.PUT("/tags", h.PutArticleTags)
+	editor.PUT("/tags", h.PutArticleTags)
 
 	// tags := e.Group("/tags")
 	// tags.GET("", h.GetTags)
