@@ -5,7 +5,6 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
-	"log"
 	"net/http"
 	"strconv"
 	"strings"
@@ -27,7 +26,7 @@ func (h *Handler) SessionMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 			var err error
 			user, err = getUserFromSessionCookie(r, h.rdb)
 			if err != nil {
-				log.Println("err getting user from session cookie: ", err)
+				c.Logger().Error("err getting user from session cookie: ", err)
 				setCookie(c, internal.SessionCookie, "", time.Now().UTC())
 				user = nil
 			}

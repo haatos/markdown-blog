@@ -1,0 +1,68 @@
+{{ define "toast-info" }}
+  <div name="toast-info" class="toast !p-2 toast-bottom toast-end z-50">
+    <div role="alert" class="alert alert-info">
+      <svg
+        class="h-6 w-6"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <g id="Complete">
+          <g id="info-square">
+            <g>
+              <rect
+                class="stroke-info-content"
+                data-name="--Rectangle"
+                fill="none"
+                height="20"
+                id="_--Rectangle"
+                rx="2"
+                ry="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                width="20"
+                x="2"
+                y="2"
+              />
+
+              <line
+                class="stroke-info-content"
+                fill="none"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                x1="12"
+                x2="12"
+                y1="12"
+                y2="16"
+              />
+
+              <line
+                class="stroke-info-content"
+                fill="none"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                x1="12"
+                x2="12"
+                y1="8"
+                y2="8"
+              />
+            </g>
+          </g>
+        </g>
+      </svg>
+      <div class="w-full max-w-xs text-start">
+        {{ . }}
+      </div>
+    </div>
+    <script>
+      function removeToastInfo(toast) {
+        toast.remove();
+      }
+      ((div) => {
+        setTimeout(() => removeToastInfo(div), 3000);
+      })(document.currentScript.parentElement);
+    </script>
+  </div>
+{{ end }}

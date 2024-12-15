@@ -19,14 +19,7 @@
                 <p>{{ .Description }}</p>
                 <div class="card-actions justify-end">
                   {{ if $.User.IsSuperuser }}
-                    <a
-                      hx-get="/editor/{{ .ID }}"
-                      hx-target="main"
-                      hx-push-url="true"
-                      href="/editor/{{ .ID }}"
-                      class="btn btn-sm"
-                      >Edit</a
-                    >
+                    <a href="/editor/{{ .ID }}" class="btn btn-sm">Edit</a>
                   {{ end }}
                   <a
                     hx-get="/articles/{{ .Slug }}"

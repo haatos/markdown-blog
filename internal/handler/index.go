@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/haatos/markdown-blog/internal"
@@ -20,7 +19,7 @@ func (h *Handler) GetIndexPage(c echo.Context) error {
 	dp := getDefaultPage(c)
 	articles, err := data.ReadLatestArticles(c.Request().Context(), h.rdb, 3)
 	if err != nil {
-		log.Println("err reading latest articles", err)
+		c.Logger().Error("err reading latest articles", err)
 	}
 	page := IndexPage{
 		Page:           dp,

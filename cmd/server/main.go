@@ -68,10 +68,11 @@ func main() {
 
 	editor := e.Group("/editor/:articleID", h.RoleMiddleware(internal.Superuser), h.URLIDMiddleware("articleID"))
 	editor.GET("", h.GetArticleEditorPage)
-	// editor.PATCH("/title", h.PatchArticleTitle)
-	// editor.PATCH("/description", h.PatchArticleDescription)
-	// editor.PATCH("/content", h.PatchArticleContent)
-	// editor.PATCH("/visibility", h.PatchArticleVisibility)
+	editor.DELETE("", h.DeleteArticle)
+	editor.PATCH("/title", h.PatchArticleTitle)
+	editor.PATCH("/description", h.PatchArticleDescription)
+	editor.PATCH("/content", h.PatchArticleContent)
+	editor.PATCH("/visibility", h.PatchArticleVisibility)
 	// editor.PUT("/tags", h.PutArticleTags)
 
 	// tags := e.Group("/tags")

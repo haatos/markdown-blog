@@ -104,8 +104,6 @@ func ReadDotenv() {
 			value := strings.TrimSpace(split[1])
 			value = strings.Trim(value, `"`)
 			os.Setenv(name, value)
-		} else {
-			log.Println("not including invalid or empty line", "line", string(line))
 		}
 	}
 }

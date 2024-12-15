@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/georgysavva/scany/v2/sqlscan"
-	"github.com/haatos/markdown-blog/internal"
 	"github.com/haatos/markdown-blog/internal/model"
 )
 
@@ -18,10 +17,9 @@ func CreateArticle(ctx context.Context, q sqlscan.Querier, article *model.Articl
 			title,
 			slug,
 			description,
-			content,
-			published_on
+			content
 		)
-		VALUES ($1, $2, $3, $4, $5, $6, $7)
+		VALUES ($1, $2, $3, $4, $5)
 		RETURNING id
 		`,
 		article.UserID,
@@ -29,8 +27,6 @@ func CreateArticle(ctx context.Context, q sqlscan.Querier, article *model.Articl
 		article.Slug,
 		article.Description,
 		article.Content,
-		article.PublishedOn.Format(internal.DBTimestampLayout),
-		article.UpdatedOn.Format(internal.DBTimestampLayout),
 	)
 }
 
@@ -51,13 +47,8 @@ func ReadArticleByID(ctx context.Context, q sqlscan.Querier, article *model.Arti
 	)
 }
 
-func DeleteArticle(ctx context.Context, tx *sql.Tx, id int) error {
-	_, err := tx.Exec(
-		`
-		DELETE FROM articles WHERE id = $1
-		`,
-		id,
-	)
+func DeleteArticle(ctx context.Context, db *sql.DB, id int) error {
+	_, err := db.Exec(`DELETE FROM articles WHERE id = $1`, id)
 	return err
 }
 
@@ -88,13 +79,13 @@ func ReadAllArticles(ctx context.Context, q sqlscan.Querier, limit, offset int, 
 		ctx, q, &as,
 		`
 		SELECT
-			articles.id,
-			articles.user_id,
-			articles.title,
-			articles.slug,
-			articles.description,
-			articles.content,
-			articles.published_on
+			id,
+			user_id,
+			title,
+			slug,
+			description,
+			content,
+			published_on
 		FROM articles
 		WHERE LOWER(title) LIKE '%'||$1||'%'
 		ORDER BY articles.published_on DESC
@@ -103,17 +94,6 @@ func ReadAllArticles(ctx context.Context, q sqlscan.Querier, limit, offset int, 
 		filter, limit, offset,
 	)
 	return as, err
-}
-
-type ARTag struct {
-	TagID     string
-	ArticleID string
-}
-
-func ReadArticlesTags(ctx context.Context, q sqlscan.Querier) ([]ARTag, error) {
-	artags := make([]ARTag, 0)
-	err := sqlscan.Select(ctx, q, &artags, "select tag_id, article_id from articles_tags")
-	return artags, err
 }
 
 func ReadAllImages(ctx context.Context, q sqlscan.Querier) ([]model.Image, error) {
@@ -128,12 +108,12 @@ func ReadPublicArticles(ctx context.Context, q sqlscan.Querier, limit, offset in
 		ctx, q, &as,
 		`
 		SELECT
-			articles.id,
-			articles.user_id,
-			articles.title,
-			articles.slug,
-			articles.description,
-			articles.published_on
+			id,
+			user_id,
+			title,
+			slug,
+			description,
+			published_on
 		FROM articles
 		WHERE published_on IS NOT NULL AND LOWER(title) LIKE '%'||$1||'%'
 		ORDER BY articles.published_on DESC
@@ -150,12 +130,12 @@ func ReadLatestArticles(ctx context.Context, q sqlscan.Querier, limit int) ([]mo
 		ctx, q, &as,
 		`
 		SELECT
-			articles.id,
-			articles.user_id,
-			articles.title,
-			articles.slug,
-			articles.description,
-			articles.published_on
+			id,
+			user_id,
+			title,
+			slug,
+			description,
+			published_on
 		FROM articles
 		WHERE published_on IS NOT NULL
 		ORDER BY published_on DESC

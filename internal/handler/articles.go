@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"log"
 	"net/http"
 	"strconv"
 
@@ -26,12 +25,12 @@ func (h *Handler) GetArticlesPage(c echo.Context) error {
 	if dp.User.IsSuperuser() {
 		articles, err = data.ReadAllArticles(c.Request().Context(), h.rdb, 6, 0, "")
 		if err != nil {
-			log.Println("err reading all articles", err)
+			c.Logger().Error("err reading all articles", err)
 		}
 	} else {
 		articles, err = data.ReadPublicArticles(c.Request().Context(), h.rdb, 6, 0, "")
 		if err != nil {
-			log.Println("err reading public articles", err)
+			c.Logger().Error("err reading public articles", err)
 		}
 	}
 
@@ -61,12 +60,12 @@ func (h *Handler) GetArticlesGrid(c echo.Context) error {
 	if dp.User.IsSuperuser() {
 		articles, err = data.ReadAllArticles(c.Request().Context(), h.rdb, 6, 6*pageNumber, "")
 		if err != nil {
-			log.Println("err reading all articles", err)
+			c.Logger().Error("err reading all articles", err)
 		}
 	} else {
 		articles, err = data.ReadPublicArticles(c.Request().Context(), h.rdb, 6, 6*pageNumber, "")
 		if err != nil {
-			log.Println("err reading public articles", err)
+			c.Logger().Error("err reading public articles", err)
 		}
 	}
 

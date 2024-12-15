@@ -91,3 +91,9 @@ func (h *Handler) renderStatusPage(c echo.Context, status int) error {
 			})
 	}
 }
+
+func (h *Handler) renderToastInfo(c echo.Context, message string) error {
+	hxRetarget(c, "body")
+	hxReswap(c, "beforeend")
+	return c.Render(http.StatusOK, "toast-info", message)
+}
