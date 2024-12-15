@@ -26,6 +26,10 @@ func (h *Handler) GetArticlePage(c echo.Context) error {
 
 	article.Content = getHTMLFromMarkdown([]byte(article.Content))
 
+	if err = data.ReadArticleTags(c.Request().Context(), h.rwdb, &article); err != nil {
+		c.Logger().Error("err reading article tags")
+	}
+
 	page := ArticlePage{
 		Page:    dp,
 		Article: article,

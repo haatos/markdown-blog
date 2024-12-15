@@ -3,6 +3,11 @@
   {{ block "article-main" . }}
     <article class="mx-auto prose w-full max-w-screen-md mt-12 mb-24">
       <h1>{{ .Article.Title }}</h1>
+      <div class="flex space-x-1 items-center">
+        {{ range .Article.Tags }}
+          <span class="badge badge-outline"> {{ .Name }}</span>
+        {{ end }}
+      </div>
       {{ if .Article.ImageKey }}
         <figure>
           <img src="{{ .Article.ImageURL }}" alt="Article image" />

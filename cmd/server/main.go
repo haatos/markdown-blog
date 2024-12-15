@@ -60,6 +60,7 @@ func main() {
 	articles := e.Group("/articles")
 	articles.GET("", h.GetArticlesPage)
 	articles.GET("/grid", h.GetArticlesGrid)
+	articles.POST("/grid", h.PostArticlesGrid)
 	article := articles.Group("/:slug")
 	article.GET("", h.GetArticlePage)
 	// articleID.GET("/comments", h.GetArticleComments)

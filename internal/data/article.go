@@ -211,7 +211,7 @@ func handleArticleRows(as []model.Article, rows *sql.Rows) ([]model.Article, err
 	return as, nil
 }
 
-func ReadArticleTags(ctx context.Context, q sqlscan.Querier, a *model.Article) ([]model.Tag, error) {
+func ReadArticleTags(ctx context.Context, q sqlscan.Querier, a *model.Article) error {
 	tags := make([]model.Tag, 0, 3)
 	err := sqlscan.Select(
 		ctx, q, &tags,
@@ -223,7 +223,8 @@ func ReadArticleTags(ctx context.Context, q sqlscan.Querier, a *model.Article) (
 		`,
 		a.ID,
 	)
-	return tags, err
+	a.Tags = tags
+	return err
 }
 
 func DeleteArticleTags(ctx context.Context, tx *sql.Tx, articleID int) error {
