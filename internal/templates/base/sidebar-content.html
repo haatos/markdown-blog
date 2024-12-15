@@ -13,6 +13,20 @@
         Articles
       </a>
     </li>
+    {{ if .User.IsSuperuser }}
+      <li>
+        <a
+          name="hx-anchor"
+          href="/tags"
+          hx-get="/tags"
+          hx-target="main"
+          hx-push-url="true"
+          class="link"
+        >
+          Tags
+        </a>
+      </li>
+    {{ end }}
     <li>
       <a
         name="hx-anchor"
