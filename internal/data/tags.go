@@ -2,6 +2,7 @@ package data
 
 import (
 	"context"
+	"database/sql"
 
 	"github.com/georgysavva/scany/v2/sqlscan"
 	"github.com/haatos/markdown-blog/internal/model"
@@ -26,4 +27,9 @@ func ReadTags(ctx context.Context, q sqlscan.Querier) ([]model.Tag, error) {
 		`,
 	)
 	return tags, err
+}
+
+func DeleteTag(ctx context.Context, db *sql.DB, id int) error {
+	_, err := db.ExecContext(ctx, "delete from tags where id = $1", id)
+	return err
 }

@@ -76,10 +76,10 @@ func main() {
 	editor.PATCH("/visibility", h.PatchArticleVisibility)
 	editor.PUT("/tags", h.PutArticleTags)
 
-	tags := e.Group("/tags")
+	tags := e.Group("/tags", h.RoleMiddleware(internal.Superuser))
 	tags.GET("", h.GetTagsPage)
-	// tags.POST("", h.PostTag)
-	// tags.DELETE("/:tagID", h.DeleteTag)
+	tags.POST("", h.PostTags)
+	tags.DELETE("/:tagID", h.DeleteTag, h.URLIDMiddleware("tagID"))
 
 	internal.GracefulShutdown(e, internal.Settings.Port)
 }

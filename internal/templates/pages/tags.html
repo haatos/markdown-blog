@@ -5,6 +5,9 @@
       <h1 class="text-3xl">Tags</h1>
       <form
         class="max-w-screen-sm flex flex-col space-y-2 border border-base-300 rounded-box p-4"
+        hx-post="/tags"
+        hx-target="#tags-div"
+        hx-swap="beforeend"
       >
         <h2>Add a new tag</h2>
         <div class="flex space-x-2 items-center">
@@ -16,42 +19,56 @@
           <button type="submit" class="btn btn-sm">Add</button>
         </div>
       </form>
-      <div class="flex flex-col space-y-2 w-full max-w-screen-sm">
+      <div id="tags-div" class="flex flex-col space-y-2 w-full max-w-screen-sm">
         {{ range .Tags }}
-          <div
-            id="tag-{{ .ID }}"
-            class="flex justify-between items-center border border-base-300 rounded-box shadow-md p-4"
-          >
-            <div>
-              <h2>{{ .Name }}</h2>
-            </div>
-            <button
-              class="btn btn-sm btn-error transition-colors duration-300"
-              onclick="delete_tag_modal.showModal()"
+          {{ block "tag-div" . }}
+            <div
+              id="tag-{{ .ID }}"
+              class="flex justify-between items-center border border-base-300 rounded-box shadow-md p-4"
             >
-              Delete
-            </button>
-            <dialog id="delete_tag_modal" class="modal">
-              <div class="modal-box">
-                <p class="py-4">
-                  Are you sure you want to delete the tag '{{ .Name }}'?
-                </p>
-                <div class="w-full modal-action justify-between">
-                  <button
-                    class="btn btn-sm btn-error"
-                    hx-delete="/tags/{{ .ID }}"
-                    hx-target="#tag-{{ .ID }}"
-                    hx-swap="outerHTML"
-                  >
-                    Delete
-                  </button>
-                  <form method="dialog">
-                    <button class="btn btn-sm">Close</button>
-                  </form>
-                </div>
+              <div>
+                <h2>{{ .Name }}</h2>
               </div>
-            </dialog>
-          </div>
+              <button
+                class="btn btn-sm btn-error transition-colors duration-300"
+              >
+                Delete                <script>
+                  ((btn)=>{
+                   btn.addEventListener("click", () => {
+                     document.getElementById("delete_tag_modal_{{ .ID }}").showModal()
+                   })
+                  })(document.currentScript.parentElement)
+                </script>
+              </button>
+              <dialog id="delete_tag_modal_{{ .ID }}" class="modal">
+                <div class="modal-box">
+                  <p class="py-4">
+                    Are you sure you want to delete the tag '{{ .Name }}'?
+                  </p>
+                  <div class="w-full modal-action justify-between">
+                    <button
+                      class="btn btn-sm btn-error"
+                      hx-delete="/tags/{{ .ID }}"
+                      hx-target="#tag-{{ .ID }}"
+                      hx-swap="outerHTML"
+                    >
+                      Delete
+                    </button>
+                    <form method="dialog">
+                      <button class="btn btn-sm">Close</button>
+                    </form>
+                  </div>
+                </div>
+              </dialog>
+              <script>
+                document.addEventListener("htmx:afterRequest", (evt) => {
+                  if (evt.detail.target.id == "{{ .ID }}" && evt.detail.xhr.status == 200) {
+                    evt.detail.elt.closest("dialog").close();
+                  }
+                });
+              </script>
+            </div>
+          {{ end }}
         {{ end }}
       </div>
     </section>
